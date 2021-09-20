@@ -1,0 +1,6 @@
+SELECT DISTINCT b.id
+FROM Weather a
+JOIN Weather b ON DATEDIFF(b.RecordDate, a.RecordDate)= 1
+WHERE b.Temperature > a.Temperature;
+
+#Runtime 405, faster than 73.88 MySQL Submissions, as on 20_09_2021

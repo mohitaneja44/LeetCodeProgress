@@ -1,0 +1,24 @@
+# solution to 
+
+SELECT Department, Employee, Salary
+
+FROM 
+
+(SELECT 
+    d.Name as Department,
+    e1.Name as Employee,
+    e1.Salary as Salary,
+    e1.DepartmentId as dId
+FROM 
+    Employee e1 INNER JOIN Department d ON e1.DepartmentID = d.Id
+ 
+) as t1
+    
+
+INNER JOIN 
+
+(SELECT max(e2.Salary) as MaxSalary, e2.DepartmentId as dId FROM Employee e2 GROUP BY e2.DepartmentId) as t2 
+
+ON t2.dId = t1.dId AND t1.Salary = t2.MaxSalary;
+
+

@@ -1,0 +1,34 @@
+# Solution to "Trips and Users" , Databases, SQL 
+
+SELECT pp.Day as "Day", CASE WHEN pp.den!=0 THEN ROUND(CAST( (pp.numerator / pp.den) AS FLOAT), 2) ELSE NULL END AS "Cancellation Rate"
+
+FROM
+(
+    SELECT z.Request_at as "Day",
+    SUM(CASE WHEN  (z.Status LIKE "cancelled_%"  AND z.client_banned = "No" AND z.driver_banned = "No") THEN 1 ELSE 0  END) as numerator,
+    SUM(CASE WHEN (z.client_banned = "No" AND z.driver_banned = "No") THEN 1 ELSE 0 END) AS den
+
+    FROM
+    (
+        
+        SELECT t.Id, t.Client_Id, t.Driver_Id, t.City_Id, t.Status, t.Request_at, u.Banned as client_banned, u2.Banned as driver_banned
+
+        FROM Trips as t
+
+        LEFT JOIN Users as u ON u.Users_Id = t.Client_Id AND u.Role = "client"
+
+        LEFT JOIN Users as u2 ON u2.Users_Id = t.Driver_Id AND u2.Role = "Driver" 
+
+
+    ) as z
+
+    
+    WHERE z.Request_at BETWEEN "2013-10-01" AND "2013-10-03" 
+    GROUP BY z.Request_at
+
+) as pp
+WHERE pp.den >0
+;
+
+
+#Runtime = 417 ms, Faster than 81.52% users as on 20_09_2021

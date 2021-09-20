@@ -1,4 +1,4 @@
-# solution to 
+# solution to Database question "Department Highest Salary" on LeetCode
 
 SELECT Department, Employee, Salary
 
